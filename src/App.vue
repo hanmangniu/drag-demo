@@ -1,18 +1,21 @@
 <template>
   <div id="app">
-    <h1>拖动复制</h1>
+    <!-- <h1>拖动复制</h1> -->
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld />
+    <!-- <HelloWorld /> -->
+    <SortTable />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
+import SortTable from './components/sortTable.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    // HelloWorld,
+    SortTable
   }
 }
 </script>
