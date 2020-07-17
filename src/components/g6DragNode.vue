@@ -32,6 +32,7 @@ export default {
         ],
       },
       selectNode: "",
+      canDrag: false,
     };
   },
   methods: {
@@ -45,26 +46,30 @@ export default {
             {
               type: "drag-node",
               shouldBegin: (e) => {
-                let model = e.item._cfg.model;
-                if (model.x >= 780 || model.x <= 20 || model.y >= 480 || model.y <= 20) {
-                  let cfg = {
-                    x: model.x >= 780 ? 770 : model.x <= 20 ? 30 : model.x,
-                    y: model.y >= 780 ? 770 : model.y <= 20 ? 30 : model.y,
-                  };
-                  let item = graph.findById(e.item._cfg.id);
-                  item.updatePosition(cfg);
-                  return false;
-                }
                 this.selectNode = e.item._cfg.id;
+                this.canDrag = true;
                 return true;
               },
               shouldUpdate: () => {
                 let item = graph.findById(this.selectNode);
                 let node = item.getBBox();
-                if (node.x >= 760 || node.x <= 0 || node.y >= 460 || node.y <= 0) {
-                  return false;
+                if (this.canDrag) {
+                  //x判断范围  0 -> graph.width - node.width/2
+                  //y判断范围  0 -> gragh.width - node.heigh/2
+                  if (node.x >= 780 || node.x <= 0 || node.y >= 480 || node.y <= 0) {
+                    let cfg = {
+                      //这里 779 21 479 是保证最后节点位置一直处于视图之中 所以减了1px
+                      x: node.x >= 780 ? 779 : node.x <= 20 ? 21 : node.x + 20,
+                      y: node.y >= 480 ? 479 : node.y <= 20 ? 21 : node.y + 20,
+                    };
+                    item.updatePosition(cfg);
+                    this.canDrag = false;
+                    return false;
+                  } else {
+                    return true;
+                  }
                 } else {
-                  return true;
+                  return false;
                 }
               },
             },
@@ -81,4 +86,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scope>
+canvas {
+  border: 1px solid;
+}
+</style>
