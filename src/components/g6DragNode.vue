@@ -86,8 +86,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scope>
-canvas {
+<style lang="scss" scoped>
+::v-deep canvas {
   border: 1px solid;
 }
 </style>
